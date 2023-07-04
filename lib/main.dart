@@ -30,8 +30,8 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
   late PageController _pageController;
   int activePage = 0;
 
-  List<Widget> images = [
-      Container(
+  List<Widget> pages = [
+   Container(
       height: 50,
       width: 50,
       color: Colors.red,
@@ -69,9 +69,9 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
     super.initState();
   }
 
-  List<Widget> indicators(int imagesLength, int currentIndex) {
+  List<Widget> indicators(int pagesLenght, int currentIndex) {
     return List<Widget>.generate(
-      imagesLength,
+      pagesLenght,
       (index) {
         bool isIndicatorSelected = currentIndex == index;
         return AnimatedContainer(
@@ -109,9 +109,7 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Carousel'),
-      ),
+      appBar: AppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -119,7 +117,7 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
             height: 200,
             width: MediaQuery.of(context).size.width,
             child: PageView.builder(
-              itemCount: images.length,
+              itemCount: pages.length,
               controller: _pageController,
               onPageChanged: (page) {
                 setState(() {
@@ -130,7 +128,7 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
               itemBuilder: (context, pagePosition) {
                 bool active = pagePosition == activePage;
                 return _CarouselSlider(
-                  images: images,
+                  images: pages,
                   pagePosition: pagePosition,
                   active: active,
                 );
@@ -141,19 +139,19 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: indicators(images.length, activePage),
+                children: indicators(pages.length, activePage),
               ),
-              Text(pageTexts[
-                  activePage]), // Exibe o texto correspondente à página atual
+              Text(
+                pageTexts[activePage],
+              ), 
               ElevatedButton(
                 onPressed: () {
-                  if (activePage == images.length - 1) {
+                  if (activePage == pages.length - 1) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => NextScreen()),
                     );
-                  } else {
-                    // Caso contrário, exibe "Próximo" e avança para a próxima página
+                  } else {                   
                     setState(() {
                       activePage++;
                       _pageController.animateToPage(
@@ -165,7 +163,7 @@ class _CarouseInitialPageState extends State<CarouseInitialPage> {
                   }
                 },
                 child: Text(
-                    activePage == images.length - 1 ? "Avançar" : "Próximo"),
+                    activePage == pages.length - 1 ? "Avançar" : "Próximo"),
               ),
               TextButton(
                   onPressed: () {
